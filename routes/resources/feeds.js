@@ -1,7 +1,36 @@
-// this os for feeds
+// dependencies
+const express = require('express');
+const router = express.Router();
+const _lodash = require('lodash');
+const valObjId = require('../../lib/middlewares/validateObjectId');
 
-/**
- * get latest feeds
- * get feed details
- * load more feeds
- */
+const feedModel = require('../../lib/models/feeds.schema');
+
+
+router.get('/', async (req, res) => {
+    const feeds = await feedModel.find({});
+    if (feeds.length > 0) {
+        const feedsList = [];
+        feeds.forEach(feed => {
+            const listData = _lodash.pick(feed, ['_id', 'title', 'coverImg', 'details.autuorId', 'details.to', 'createdAt', 'stats']);
+            feedsList.push(listData);
+        });
+        return res.status(200).send(feedsList);
+    } else {
+        return res.status(404).send('Feeds not found');
+    };
+});
+
+
+router.get('/:id', [valObjId], async (req, res) => {
+    const state = req.query.state;
+    const feedsDetails = await feedModel.findById(req.params.id);
+    if(feedsDetails) {
+        return res.status(200).send(feedsDetails);
+    } else {
+        return res.status(404).send('Specified sermon not found');
+    };
+});
+
+
+module.exports = router;

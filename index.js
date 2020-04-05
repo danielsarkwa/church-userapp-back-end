@@ -8,11 +8,17 @@ require('./lib/database/mongodb')();
 const sermons = require('./routes/resources/sermons');
 const podcasts = require('./routes/resources/podcasts');
 const articles = require('./routes/resources/articles');
+const feeds = require('./routes/resources/feeds');
+const announcements = require('./routes/resources/announcements');
+const events = require('./routes/resources/events');
 
 // route handlers
 app.use('/api/sermons', sermons);
 app.use('/api/podcasts', podcasts);
 app.use('/api/articles', articles);
+app.use('/api/feeds', feeds);
+app.use('/api/announcements', announcements);
+app.use('/api/events', events);
 
 // middlewares
 app.use(bodyParser.json());
