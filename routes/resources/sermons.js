@@ -5,15 +5,20 @@ const _lodash = require('lodash');
 const valObjId = require('../../lib/middlewares/validateObjectId');
 
 const sermonModel = require('../../lib/models/sermons.schema');
-const folderModel = require('../../lib/models/folders.schema');
+const folderModel = require('../../lib/models/shared/folders.schema');
 
 
 router.get('/', async (req, res) => {
-    const series = await folderModel.find({'belongsTo': 'sermon'});
-    if (series.length > 0) {
-        return res.status(200).send(series);
+    const allSeries = await folderModel.find({'belongsTo': 'sermon'});
+    if (allSeries.length > 0) {
+        const seriesList = [];
+        allSeries.forEach(series => {
+            const listData = _lodash.pick(series, ['_id', 'title', 'coverImg', 'numberOfFiles', 'createdAt', 'stats']);
+            seriesList.push(listData);
+        });
+        return res.status(200).send(seriesList);
     } else {
-        return res.status(200).send(listData);
+        return res.status(404).send('Series not found');
     };
 });
 
@@ -23,7 +28,7 @@ router.get('/series/one/:id', [valObjId], async (req, res) => {
     if(seriesDetails) {
         return res.status(200).send(seriesDetails);
     } else {
-        res.status(404).send('Specified series not found');
+        return res.status(404).send('Specified series not found');
     };
 });
 
@@ -41,7 +46,7 @@ router.get('/:id', [valObjId], async (req, res) => {
             return res.status(200).send(listData);
         }
     } else {
-        res.status(404).send('Specified sermon not found');
+        return res.status(404).send('Specified sermon not found');
     };
 });
 
@@ -56,7 +61,7 @@ router.get('/sermons/all', async (req, res) => {
         });
         return res.status(200).send(sermonsList);
     } else {
-        res.status(404).send('Sermons not found');
+        return res.status(404).send('Sermons not found');
     }
 });
 

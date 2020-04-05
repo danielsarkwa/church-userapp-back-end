@@ -6,9 +6,11 @@ require('./lib/database/mongodb')();
 
 // routes
 const sermons = require('./routes/resources/sermons');
+const podcasts = require('./routes/resources/podcasts');
 
 // route handlers
 app.use('/api/sermons', sermons);
+app.use('/api/podcasts', podcasts);
 
 // middlewares
 app.use(bodyParser.json());
