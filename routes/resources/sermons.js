@@ -1,36 +1,63 @@
 // dependencies
 const express = require('express');
 const router = express.Router();
+const _lodash = require('lodash');
+const valObjId = require('../../lib/middlewares/validateObjectId');
 
-// import db schema
+const sermonModel = require('../../lib/models/sermons.schema');
+const folderModel = require('../../lib/models/folders.schema');
 
-// handle routes
-/**
- * sends the list of all sermons series
- */
-router.get('/', (req, res) => {
-    res.send('all series here');
+
+router.get('/', async (req, res) => {
+    const series = await folderModel.find({'belongsTo': 'sermon'});
+    if (series.length > 0) {
+        return res.status(200).send(series);
+    } else {
+        return res.status(200).send(listData);
+    };
 });
 
-/**
- * sends the list of sermons in a sermon series
- */
-router.get('/series/one/:seriesId', (req, res) => {
-    res.send('one series details here with lists');
+
+router.get('/series/one/:id', [valObjId], async (req, res) => {
+    const seriesDetails = await folderModel.findById(req.params.id);
+    if(seriesDetails) {
+        return res.status(200).send(seriesDetails);
+    } else {
+        res.status(404).send('Specified series not found');
+    };
 });
 
-/**
- * sends the details of a sermon
- */
-router.get('/:sermonId', (req, res) => {
-    res.send('one sermon details here');
+
+router.get('/:id', [valObjId], async (req, res) => {
+    const state = req.query.state;
+    const sermonDetails = await sermonModel.findById(req.params.id);
+    if(sermonDetails) {
+        if (state == 'details') {
+            // this is used when the a single sermon is opened
+            return res.status(200).send(sermonDetails);
+        } else {
+            // this is used by the front-end to load sermons of a series on by one
+            const listData = _lodash.pick(sermonDetails, ['_id', 'title', 'seriesId', 'coverImg', 'details.desc', 'details.speaker']);
+            return res.status(200).send(listData);
+        }
+    } else {
+        res.status(404).send('Specified sermon not found');
+    };
 });
 
-/**
- * sends the list of all sermons
- */
-router.get('/sermons/all', (req, res) => {
-    res.send('all sermons here');
+
+router.get('/sermons/all', async (req, res) => {
+    const sermons = await sermonModel.find({});
+    if (sermons.length > 0) {
+        const sermonsList = [];
+        sermons.forEach(sermons => {
+            const listData = _lodash.pick(sermons, ['_id', 'title', 'seriesId', 'coverImg', 'details.desc', 'details.speaker']);
+            sermonsList.push(listData);
+        });
+        return res.status(200).send(sermonsList);
+    } else {
+        res.status(404).send('Sermons not found');
+    }
 });
 
 

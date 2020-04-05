@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+require('./lib/database/mongodb')();
 
 // routes
 const sermons = require('./routes/resources/sermons');
