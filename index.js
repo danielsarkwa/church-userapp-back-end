@@ -7,10 +7,12 @@ require('./lib/database/mongodb')();
 // routes
 const sermons = require('./routes/resources/sermons');
 const podcasts = require('./routes/resources/podcasts');
+const articles = require('./routes/resources/articles');
 
 // route handlers
 app.use('/api/sermons', sermons);
 app.use('/api/podcasts', podcasts);
+app.use('/api/articles', articles);
 
 // middlewares
 app.use(bodyParser.json());
