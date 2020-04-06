@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const _lodash = require('lodash');
 const valObjId = require('../../lib/middlewares/validateObjectId');
-
 const artlceModel = require('../../lib/models/articles.schema');
 const folderModel = require('../../lib/models/shared/folders.schema');
 

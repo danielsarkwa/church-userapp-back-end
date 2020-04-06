@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const _lodash = require('lodash');
 const valObjId = require('../../lib/middlewares/validateObjectId');
-
 const feedModel = require('../../lib/models/feeds.schema');
 
 

@@ -3,13 +3,10 @@ const express = require('express');
 const router = express.Router();
 const _lodash = require('lodash');
 const valObjId = require('../../lib/middlewares/validateObjectId');
-
 const podcastModel = require('../../lib/models/podcasts.schema');
 const folderModel = require('../../lib/models/shared/folders.schema');
 
 
-// get all channels
-// don't send -- files, desc
 router.get('/', async (req, res) => {
     const channels = await folderModel.find({'belongsTo': 'podcast'});
     if (channels.length > 0) {

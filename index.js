@@ -11,6 +11,8 @@ const articles = require('./routes/resources/articles');
 const feeds = require('./routes/resources/feeds');
 const announcements = require('./routes/resources/announcements');
 const events = require('./routes/resources/events');
+const helpSupport = require('./routes/resources/help-support');
+const user = require('./routes/resources/user');
 
 // route handlers
 app.use('/api/sermons', sermons);
@@ -19,10 +21,12 @@ app.use('/api/articles', articles);
 app.use('/api/feeds', feeds);
 app.use('/api/announcements', announcements);
 app.use('/api/events', events);
+app.use('/api/helpSupport', helpSupport);
+app.use('/api/user', user);
 
 // middlewares
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // server
 const port = process.env.PORT || 1000;
