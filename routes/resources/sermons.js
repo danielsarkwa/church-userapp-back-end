@@ -15,9 +15,9 @@ router.get('/', async (req, res) => {
             const listData = _lodash.pick(series, ['_id', 'title', 'coverImg', 'numberOfFiles', 'createdAt', 'stats']);
             seriesList.push(listData);
         });
-        return res.status(200).send(seriesList);
+        return res.status(200).json(seriesList);
     } else {
-        return res.status(404).send('Series not found');
+        return res.status(404).json('Series not found');
     };
 });
 
@@ -25,9 +25,9 @@ router.get('/', async (req, res) => {
 router.get('/series/one/:id', [valObjId], async (req, res) => {
     const seriesDetails = await folderModel.findById(req.params.id);
     if(seriesDetails) {
-        return res.status(200).send(seriesDetails);
+        return res.status(200).json(seriesDetails);
     } else {
-        return res.status(404).send('Specified series not found');
+        return res.status(404).json('Specified series not found');
     };
 });
 
@@ -38,14 +38,14 @@ router.get('/:id', [valObjId], async (req, res) => {
     if(sermonDetails) {
         if (state == 'details') {
             // this is used when the a single sermon is opened
-            return res.status(200).send(sermonDetails);
+            return res.status(200).json(sermonDetails);
         } else {
             // this is used by the front-end to load sermons of a series on by one
             const listData = _lodash.pick(sermonDetails, ['_id', 'title', 'seriesId', 'coverImg', 'details.desc', 'details.speaker']);
-            return res.status(200).send(listData);
+            return res.status(200).json(listData);
         }
     } else {
-        return res.status(404).send('Specified sermon not found');
+        return res.status(404).json('Specified sermon not found');
     };
 });
 
@@ -58,9 +58,9 @@ router.get('/sermons/all', async (req, res) => {
             const listData = _lodash.pick(sermons, ['_id', 'title', 'seriesId', 'coverImg', 'details.desc', 'details.speaker']);
             sermonsList.push(listData);
         });
-        return res.status(200).send(sermonsList);
+        return res.status(200).json(sermonsList);
     } else {
-        return res.status(404).send('Sermons not found');
+        return res.status(404).json('Sermons not found');
     }
 });
 

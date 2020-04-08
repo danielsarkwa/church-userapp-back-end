@@ -14,9 +14,9 @@ router.get('/', async (req, res) => {
             const listData = _lodash.pick(announcement, ['_id', 'title', 'coverImg', 'details.from', 'stats', 'createdAt', 'commentsData.totalCmts']);
             announcementList.push(listData);
         });
-        return res.status(200).send(announcementList);
+        return res.status(200).json(announcementList);
     } else {
-        return res.status(404).send('announcement not found');
+        return res.status(404).json('announcement not found');
     };
 });
 
@@ -24,9 +24,9 @@ router.get('/', async (req, res) => {
 router.get('/:id', [valObjId], async (req, res) => {
     const announcementDetails = await announcementModel.findById(req.params.id);
     if(announcementDetails) {
-        return res.status(200).send(announcementDetails);
+        return res.status(200).json(announcementDetails);
     } else {
-        return res.status(404).send('Specified announcement not found');
+        return res.status(404).json('Specified announcement not found');
     };
 });
 

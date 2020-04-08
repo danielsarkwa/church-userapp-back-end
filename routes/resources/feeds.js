@@ -14,9 +14,9 @@ router.get('/', async (req, res) => {
             const listData = _lodash.pick(feed, ['_id', 'title', 'coverImg', 'details.autuorId', 'details.to', 'createdAt', 'stats']);
             feedsList.push(listData);
         });
-        return res.status(200).send(feedsList);
+        return res.status(200).json(feedsList);
     } else {
-        return res.status(404).send('Feeds not found');
+        return res.status(404).json('Feeds not found');
     };
 });
 
@@ -25,9 +25,9 @@ router.get('/:id', [valObjId], async (req, res) => {
     const state = req.query.state;
     const feedsDetails = await feedModel.findById(req.params.id);
     if(feedsDetails) {
-        return res.status(200).send(feedsDetails);
+        return res.status(200).json(feedsDetails);
     } else {
-        return res.status(404).send('Specified sermon not found');
+        return res.status(404).json('Specified sermon not found');
     };
 });
 

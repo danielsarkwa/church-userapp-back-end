@@ -6,9 +6,9 @@ const helpSupportsModel = require('../../lib/models/help-support.schema');
 router.get('/faqs', async (req, res) => {
     const faqs = await helpSupportsModel.find({'type': 'faq'});
     if (faqs.length > 0) {
-        return res.status(200).send(faqs);
+        return res.status(200).json(faqs);
     } else {
-        return res.status(404).send('Faqs not found');
+        return res.status(404).json('Faqs not found');
     }
 });
 
@@ -16,33 +16,32 @@ router.get('/faqs', async (req, res) => {
 router.get('/suggestedFeatures', async (req, res) => {
     const suggestedFeatures = await helpSupportsModel.find({'type':'feature'});
     if (suggestedFeatures.length > 0) {
-        return res.status(200).send(suggestedFeatures);
+        return res.status(200).json(suggestedFeatures);
     } else {
-        return res.status(404).send('Suggested feature not found');
+        return res.status(404).json('Suggested feature not found');
     }
 });
 
 
 router.post('/suggestedFeatures', async (req, res) => {
-//    try {
-//        console.log(req.body);
-//         // const suggestedFeature = await new helpSupportsModel(req.body);
-//         // await suggestedFeature.save();
-//         res.status(200).send('suggested feature added successfully');
-//     } catch(ex) {
-//         return res.status(404).send('Error on adding new suggested feature');
-//     }
+   try {
+        const suggestedFeature = await new helpSupportsModel(req.body);
+        await suggestedFeature.save();
+        res.status(200).json('suggested feature added successfully');
+    } catch(ex) {
+        return res.status(404).json('Error on adding new suggested feature');
+    }
 });
 
 
 router.post('/feedback', async (req, res) => {
-    // try {
-    //     const userFeedback = await new helpSupportsModel(req.body);
-    //     await userFeedback.save();
-    //     res.status(200).send('success');
-    // } catch(ex) {
-    //         return res.status(404).send('Error on posting feedback');
-    // }
+    try {
+        const userFeedback = await new helpSupportsModel(req.body);
+        await userFeedback.save();
+        res.status(200).json('feedback sent');
+    } catch(ex) {
+        return res.status(404).json('Error on posting feedback');
+    }
 });
 
 

@@ -15,9 +15,9 @@ router.get('/', async (req, res) => {
             const listData = _lodash.pick(channel, ['_id', 'title', 'coverImg', 'numberOfFiles', 'createdAt', 'stats']);
             channelList.push(listData);
         });
-        return res.status(200).send(channelList);
+        return res.status(200).json(channelList);
     } else {
-        res.status(404).send('Channels not found');
+        res.status(404).json('Channels not found');
     };
 });
 
@@ -25,9 +25,9 @@ router.get('/', async (req, res) => {
 router.get('/channels/one/:id', [valObjId], async (req, res) => {
     const channelDetails = await folderModel.findById(req.params.id);
     if(channelDetails) {
-        return res.status(200).send(channelDetails);
+        return res.status(200).json(channelDetails);
     } else {
-        res.status(404).send('Specified channel not found');
+        res.status(404).json('Specified channel not found');
     };
 });
 
@@ -38,14 +38,14 @@ router.get('/:id', [valObjId], async (req, res) => {
     if(podcastDetails) {
         if (state == 'details') {
             // this is used when the a single podcast is opened
-            return res.status(200).send(podcastDetails);
+            return res.status(200).json(podcastDetails);
         } else {
             // this is used by the front-end to load podcast of a channel on by one
             const listData = _lodash.pick(podcastDetails, ['_id', 'title', 'channelId', 'coverImg', 'details.speaker.guests', 'stats']);
-            return res.status(200).send(listData);
+            return res.status(200).json(listData);
         }
     } else {
-        res.status(404).send('Specified sermon not found');
+        res.status(404).json('Specified sermon not found');
     };
 });
 
