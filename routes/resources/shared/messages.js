@@ -1,14 +1,25 @@
-/**
- * deal with all messages
- */
+const express = require('express');
+const router = express.Router();
+const messageModel = require('../../../lib/models/shared/messages.schema');
 
-// when a ever a user sends a message it goes through here
+// add a push notification to the dashboard here
+router.post('/', async (req, res) => {
+    message = await new messageModel({
+        msgType: req.body.msgType,
+        msgTypeId: req.body.msgTypeId,
+        messageSubject: req.body.messageSubject,
+        messageContent: req.body.messageContent,
+        messageAutour: req.body.messageAutour
+    });
 
-/** messages on 
- * sermons
- * podcast
- * articles
- * events
- * announcement
- *
- */
+    try{
+        await message.save();
+        res.status(200).json('message sent');
+    } catch(ex) {
+        console.log(ex);
+        res.status(400).json('could not send message');
+    }
+});
+
+
+module.exports = router;

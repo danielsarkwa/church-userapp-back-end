@@ -19,6 +19,8 @@ const events = require('./routes/resources/events');
 const helpSupport = require('./routes/resources/help-support');
 const user = require('./routes/resources/user');
 const auth = require('./routes/resources/auth');
+const message = require('./routes/resources/shared/messages');
+const comment = require('./routes/resources/shared/comments');
 
 // route handlers
 app.use('/api/sermons', sermons);
@@ -30,6 +32,8 @@ app.use('/api/events', events);
 app.use('/api/helpSupport', helpSupport);
 app.use('/api/user', user);
 app.use('/api/auth', auth);
+app.use('/api/message', message);
+app.use('/api/comment', comment);
 
 // server
 const port = process.env.PORT || 1000;

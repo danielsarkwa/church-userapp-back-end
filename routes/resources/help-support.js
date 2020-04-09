@@ -22,7 +22,7 @@ router.get('/suggestedFeatures', async (req, res) => {
     }
 });
 
-
+// add a push notification to the dashboard here
 router.post('/suggestedFeatures', async (req, res) => {
    try {
         const suggestedFeature = await new helpSupportsModel(req.body);
@@ -33,7 +33,7 @@ router.post('/suggestedFeatures', async (req, res) => {
     }
 });
 
-
+// add a push notification to the dashboard here
 router.post('/feedback', async (req, res) => {
     try {
         const userFeedback = await new helpSupportsModel(req.body);

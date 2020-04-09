@@ -1,10 +1,11 @@
 // dependencies
 const express = require('express');
 const router = express.Router();
+const valObjId = require('../../lib/middlewares/validateObjectId');
 const userModel = require('../../lib/models/user.schema');
 const _lodash = require('lodash');
 
-
+// add a push notification to the dashboard here
 router.post('/create', async (req, res) => {
     let user = await userModel.findOne({ email: req.body.email });
     if(user) return res.status(400).json('user already registered');
@@ -29,7 +30,7 @@ router.post('/create', async (req, res) => {
 });
 
 
-router.get('/profile/snap/:id', async (req, res) => {
+router.get('/profile/snap/:id', [valObjId], async (req, res) => {
     try {
         const user = await userModel.findById(req.params.id);
         const snapData = _lodash.pick(user, ['_id', 'avatarUrl', 'userName']);
@@ -40,7 +41,7 @@ router.get('/profile/snap/:id', async (req, res) => {
 });
 
 
-router.get('/profile/:id',async (req, res) => {
+router.get('/profile/:id', [valObjId], async (req, res) => {
     try {
         const userDetails = await userModel.findById(req.params.id);
         if(!userDetails) return res.status(404).json("user not found");
@@ -51,7 +52,7 @@ router.get('/profile/:id',async (req, res) => {
 });
 
 
-router.put('/profile/:id', async(req, res) => {
+router.put('/profile/:id', [valObjId], async(req, res) => {
     let user = await userModel.findById(req.params.id);
     if(!user) return res.status(404).json("user not found.");
 
@@ -87,7 +88,7 @@ router.put('/profile/:id', async(req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [valObjId], async (req, res) => {
     const userDel = await userModel.findById(req.params.id);
     if(!userDel) return res.status(404).json("user with the given ID was not found.");
     try{
