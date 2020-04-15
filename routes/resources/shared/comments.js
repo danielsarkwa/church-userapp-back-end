@@ -4,10 +4,20 @@ const valObjId = require('../../../lib/middlewares/validateObjectId');
 const commentModel = require('../../../lib/models/shared/comments.schema');
 
 
-// getting comments of a resource
+router.get('/all', async (req, res) => {
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const comments = await commentModel
+        .find({'cmtType': req.query.entity, 'cmtTypeId': req.query.entityId})
+        .skip((perPage * page) - perPage).limit(perPage);
+    if (comments.length > 0) {
+        return res.status(200).json(comments);
+    } else {
+        return res.status(400).json('Comments not found');
+    };
+});
 
-// add a push notification to the dashboard and mobile app here
-// post new comment
+
 router.post('/post', async (req, res) => {
     comment = await new commentModel({
         cmtType: req.body.cmtType,
@@ -26,7 +36,6 @@ router.post('/post', async (req, res) => {
 });
 
 
-// add a push notification to the dashboard here
 router.put('/reply/:id', [valObjId], async (req, res) => {
     let comment = await commentModel.findById(req.params.id);
     if(!comment) return res.status(404).json("comment not found.");

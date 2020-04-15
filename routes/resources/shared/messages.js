@@ -21,7 +21,4 @@ router.post('/', async (req, res) => {
 });
 
 
-// get my messages
-
-
 module.exports = router;
