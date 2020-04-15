@@ -8,7 +8,10 @@ const folderModel = require('../../lib/models/shared/folders.schema');
 
 
 router.get('/', async (req, res) => {
-    const channels = await folderModel.find({'belongsTo': 'podcast'});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const channels = await folderModel
+        .find({'belongsTo': 'podcast'}).skip((perPage * page) - perPage).limit(perPage);
     if (channels.length > 0) {
         const channelList = [];
         channels.forEach(channel => {

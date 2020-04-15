@@ -8,7 +8,10 @@ const folderModel = require('../../lib/models/shared/folders.schema');
 
 
 router.get('/', async (req, res) => {
-    const allSeries = await folderModel.find({'belongsTo': 'sermon'});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const allSeries = await folderModel
+        .find({'belongsTo': 'sermon'}).skip((perPage * page) - perPage).limit(perPage);
     if (allSeries.length > 0) {
         const seriesList = [];
         allSeries.forEach(series => {
@@ -51,7 +54,10 @@ router.get('/:id', [valObjId], async (req, res) => {
 
 
 router.get('/sermons/all', async (req, res) => {
-    const sermons = await sermonModel.find({});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const sermons = await sermonModel
+        .find({}).skip((perPage * page) - perPage).limit(perPage);
     if (sermons.length > 0) {
         const sermonsList = [];
         sermons.forEach(sermons => {

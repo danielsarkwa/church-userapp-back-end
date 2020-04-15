@@ -3,6 +3,9 @@ const router = express.Router();
 const valObjId = require('../../../lib/middlewares/validateObjectId');
 const commentModel = require('../../../lib/models/shared/comments.schema');
 
+
+// getting comments of a resource
+
 // add a push notification to the dashboard and mobile app here
 // post new comment
 router.post('/post', async (req, res) => {
@@ -24,7 +27,6 @@ router.post('/post', async (req, res) => {
 
 
 // add a push notification to the dashboard here
-// reply a comment
 router.put('/reply/:id', [valObjId], async (req, res) => {
     let comment = await commentModel.findById(req.params.id);
     if(!comment) return res.status(404).json("comment not found.");

@@ -16,10 +16,12 @@ router.post('/', async (req, res) => {
         await message.save();
         res.status(200).json('message sent');
     } catch(ex) {
-        console.log(ex);
         res.status(400).json('could not send message');
     }
 });
+
+
+// get my messages
 
 
 module.exports = router;

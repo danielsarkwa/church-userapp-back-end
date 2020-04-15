@@ -6,8 +6,15 @@ const valObjId = require('../../lib/middlewares/validateObjectId');
 const eventModel = require('../../lib/models/events.schema');
 
 
+// the app always gets the current week events by default
 router.get('/', async (req, res) => {
-    const events = await eventModel.find({});
+    const getData = req.body;
+    const events = await eventModel
+        .find({
+            'date.yr': { $eq: getData.from.yr },
+            'date.mon': { $eq: getData.from.mon },
+            'date.day': { $gte: getData.from.day, $lte: getData.to.day }
+        });
     if (events.length > 0) {
         const eventList = [];
         events.forEach(event => {

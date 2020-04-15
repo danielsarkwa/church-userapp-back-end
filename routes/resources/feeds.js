@@ -7,7 +7,10 @@ const feedModel = require('../../lib/models/feeds.schema');
 
 
 router.get('/', async (req, res) => {
-    const feeds = await feedModel.find({});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const feeds = await feedModel
+        .find({}).skip((perPage * page) - perPage).limit(perPage);
     if (feeds.length > 0) {
         const feedsList = [];
         feeds.forEach(feed => {

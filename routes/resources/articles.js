@@ -8,7 +8,10 @@ const folderModel = require('../../lib/models/shared/folders.schema');
 
 
 router.get('/', async (req, res) => {
-    const accounts = await folderModel.find({'belongsTo': 'article'});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const accounts = await folderModel
+        .find({'belongsTo': 'article'}).skip((perPage * page) - perPage).limit(perPage);
     if (accounts.length > 0) {
         const accountList = [];
         accounts.forEach(series => {
@@ -33,7 +36,10 @@ router.get('/accounts/one/:id', [valObjId], async (req, res) => {
 
 
 router.get('/articles/all', async (req, res) => {
-    const articles = await artlceModel.find({});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const articles = await artlceModel
+        .find({}).skip((perPage * page) - perPage).limit(perPage);
     if (articles.length > 0) {
         const articlesList = [];
         articles.forEach(articles => {

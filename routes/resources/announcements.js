@@ -7,7 +7,10 @@ const announcementModel = require('../../lib/models/announcements.schema');
 
 
 router.get('/', async (req, res) => {
-    const announcements = await announcementModel.find({});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const announcements = await announcementModel
+        .find({}).skip((perPage * page) - perPage).limit(perPage);
     if (announcements.length > 0) {
         const announcementList = [];
         announcements.forEach(announcement => {

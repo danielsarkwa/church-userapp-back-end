@@ -4,7 +4,10 @@ const router = express.Router();
 const helpSupportsModel = require('../../lib/models/help-support.schema');
 
 router.get('/faqs', async (req, res) => {
-    const faqs = await helpSupportsModel.find({'type': 'faq'});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const faqs = await helpSupportsModel
+        .find({'type': 'faq'}).skip((perPage * page) - perPage).limit(perPage);
     if (faqs.length > 0) {
         return res.status(200).json(faqs);
     } else {
@@ -14,7 +17,10 @@ router.get('/faqs', async (req, res) => {
 
 
 router.get('/suggestedFeatures', async (req, res) => {
-    const suggestedFeatures = await helpSupportsModel.find({'type':'feature'});
+    const perPage = 10;
+    const page = req.query.pageNumber ? req.query.pageNumber : 1;
+    const suggestedFeatures = await helpSupportsModel
+        .find({'type':'feature'}).skip((perPage * page) - perPage).limit(perPage);
     if (suggestedFeatures.length > 0) {
         return res.status(200).json(suggestedFeatures);
     } else {

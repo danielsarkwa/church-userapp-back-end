@@ -1,0 +1,7 @@
+// accessing mongodb on aws documentdb
+
+// app will connect to aws s3 to upload image -- profile picture 
+
+// sns for push notification on mobile device, trigged by dashboard
+
+// ses, welcome message on user sign up
